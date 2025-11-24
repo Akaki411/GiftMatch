@@ -1,0 +1,226 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\DotNetLearn\\DotNetLearn.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\DotNetLearn\\DotNetLearn.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\DotNetLearn\\DotNetLearn.csproj",
+        "projectName": "DotNetLearn",
+        "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\DotNetLearn\\DotNetLearn.csproj",
+        "packagesPath": "C:\\Users\\akova\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\DotNetLearn\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\akova\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj": {
+                "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj"
+              },
+              "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj": {
+                "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj",
+        "projectName": "Entity",
+        "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj",
+        "packagesPath": "C:\\Users\\akova\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\akova\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj",
+        "projectName": "Migrations",
+        "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj",
+        "packagesPath": "C:\\Users\\akova\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\akova\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj": {
+                "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
