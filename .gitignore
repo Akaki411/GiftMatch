@@ -39,7 +39,7 @@ build/Release
 
 # Dependency directories
 node_modules/
-bin/
+net9.0/
 .idea/
 data/
 jspm_packages/
