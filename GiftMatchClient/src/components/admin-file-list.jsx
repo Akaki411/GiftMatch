@@ -1,7 +1,7 @@
 import React from 'react';
-import PlusInCircleSVG from "../../resources/vector_icons/grey_plus_in_circle.svg";
+import {CirclePlus} from "lucide-react"
 
-const ScrollingFileList = (props) =>
+const AdminFileList = (props) =>
 {
     const [state, setState] = React.useState({})
     const selectImagesForCreateItem = React.createRef()
@@ -19,7 +19,8 @@ const ScrollingFileList = (props) =>
     return(
         <div className="addPhotoBlock">
             <label className="add-photo-button" style={props.btnStyle}>
-                <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-around"}}>
+                <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-evenly"}}>
+                    <CirclePlus size={80} color="#aaafb2" strokeWidth={1} />
                     <p>Добавить фото</p>
                 </div>
                 <input type="file" accept="image/*" ref={selectImagesForCreateItem} multiple={true} onChange={() => {OnSelectImageForItem()}}/>
@@ -87,4 +88,4 @@ const Block = ({file}) =>
     )
 }
 
-export default ScrollingFileList;
+export default AdminFileList;

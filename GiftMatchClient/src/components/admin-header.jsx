@@ -19,16 +19,16 @@ const AdminHeader = ({
         boxShadow: "0 2px 4px #D7D7D7",
         marginTop: "30px",
     }
-
     const content_block = {
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
-        columnGap: "10px",
+        columnGap: "15px",
     }
     const font = {
         color: "#2B3C4C"
     }
+
     return (
         <div style={head}>
             <div style={content_block}>

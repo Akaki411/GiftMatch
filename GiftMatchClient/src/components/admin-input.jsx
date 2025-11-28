@@ -4,10 +4,12 @@ const AdminInput =({
     type = "text",
     style = {},
     onChange = () => {},
-    placeholder = "Текст..."
+    placeholder = "Текст...",
+    min = Number.MIN_SAFE_INTEGER,
+    max = Number.MAX_SAFE_INTEGER,
 }) => {
     return (
-        <input type={type} style={style} onChange={key => {onChange(key.target.value)}} className="round-input" placeholder={placeholder}/>
+        <input type={type} min={min} max={max} style={style} onChange={key => {onChange(key.target.value)}} className="round-input" placeholder={placeholder}/>
     )
 }
 

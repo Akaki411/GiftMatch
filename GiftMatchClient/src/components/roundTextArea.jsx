@@ -6,7 +6,7 @@ const RoundTextArea = ({
     style = {},
 }) => {
     return (
-        <textarea className="round-textarea" placeholder={placeholder} onChange={(key)=>{console.log(key.target.value)}} style={style}/>
+        <textarea className="round-textarea" placeholder={placeholder} onChange={(key)=>{onChange(key.target.value)}} style={style}/>
     )
 }
 

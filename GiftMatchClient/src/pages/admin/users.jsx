@@ -1,16 +1,33 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
+import AdminHeader from "../../components/admin-header.jsx";
+import AdminSearchPlace from "../../components/admin-search-place.jsx";
 
-class Users extends Component
+const Users = ({
+   setChapter = () => {},
+   setTitle = () => {}
+}) =>
 {
+    useEffect(() => {
+        setChapter("Пользователи")
+        setTitle("Все пользователи")
+    }, [])
 
-    render ()
-    {
-        return (
-            <div style={this.props.style}>
-                Пользователи
-            </div>
-        )
-    }
+    return (
+        <div className="content-block invisible-scrolling">
+            <AdminHeader text="Список пользователей">
+                <AdminSearchPlace onSearch={text => console.log(text)}/>
+            </AdminHeader>
+            <UserBlock/>
+        </div>
+    )
+}
+
+const UserBlock = () => {
+    return (
+        <>
+            Здесь будут пользователи
+        </>
+    )
 }
 
 export default Users;

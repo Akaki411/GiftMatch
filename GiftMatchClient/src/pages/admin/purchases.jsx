@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AdminHeader from "../../components/admin-header.jsx";
 
-function Purchases()
+const Purchases = ({
+    setChapter = () => {},
+    setTitle = () => {}
+}) =>
 {
+    useEffect(() => {
+        setChapter("Покупки")
+        setTitle("Список последних")
+    }, [])
     return (
         <div className="content-block invisible-scrolling">
             <AdminHeader text="Список заказов"/>

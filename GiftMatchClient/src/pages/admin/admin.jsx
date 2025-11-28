@@ -3,18 +3,20 @@ import './admin.css'
 import Purchases from "./purchases.jsx"
 import Items from "./items.jsx"
 import {Gift, LayoutList, List, UserCog} from "lucide-react"
+import Categories from "./categories.jsx";
+import Users from "./users.jsx";
 
 const Admin = () =>
 {
-    const [state, setState] = React.useState("purchases")
+    const [state, setState] = React.useState("products")
     const [chapter, setChapter] = React.useState("Покупки")
     const [title, setTitle] = React.useState("Список последних")
 
     const buttons = {
-        purchases: {id: 1, logo: Gift, title:"Заказы", element: <Purchases/>},
-        products: {id: 2, logo: LayoutList, title:"Товары", element: <Items/>},
-        categories: {id: 3, logo: List, title:"Категории", element: <Purchases/>},
-        users: {id: 4, logo: UserCog, title:"Пользователи", element: <Purchases/>},
+        purchases: {id: 1, logo: Gift, title:"Заказы", element: <Purchases setChapter={setChapter} setTitle={setTitle}/>},
+        products: {id: 2, logo: LayoutList, title:"Товары", element: <Items setChapter={setChapter} setTitle={setTitle}/>},
+        categories: {id: 3, logo: List, title:"Категории", element: <Categories setChapter={setChapter} setTitle={setTitle}/>},
+        users: {id: 4, logo: UserCog, title:"Пользователи", element: <Users setChapter={setChapter} setTitle={setTitle}/>},
     }
 
     useEffect(() => {
@@ -73,7 +75,6 @@ const MenuCell = ({
         <div className='menu_btn' onClick={fn}>
             {<btn.logo  size={36} color={isActive ? "#1DC19F" : "#ffffff"}/>}
             <p style={{color: isActive ? "#1DC19F" : "#ffffff"}}>{btn.title}</p>
-            {btn.marker && <div className="redMarker"/>}
         </div>
     );
 };
