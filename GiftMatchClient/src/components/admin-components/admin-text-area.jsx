@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RoundTextArea = ({
+const AdminTextArea = ({
     placeholder = "Текст...",
     onChange = () => {},
     style = {},
@@ -10,4 +10,4 @@ const RoundTextArea = ({
     )
 }
 
-export default RoundTextArea;
+export default AdminTextArea;

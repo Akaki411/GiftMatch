@@ -1,10 +1,10 @@
 import React, {Component, useEffect, useState} from "react"
-import AdminInput from "../../components/admin-input.jsx"
-import AdminSelect from "../../components/admin-select.jsx"
-import RoundTextArea from "../../components/roundTextArea"
-import AdminFileList from "../../components/admin-file-list.jsx"
-import AdminFrame from "../../components/admin-frame.jsx";
-import AdminHeader from "../../components/admin-header.jsx";
+import AdminInput from "../../components/admin-components/admin-input.jsx"
+import AdminSelect from "../../components/admin-components/admin-select.jsx"
+import AdminTextArea from "../../components/admin-components/admin-text-area.jsx"
+import AdminFileList from "../../components/admin-components/admin-file-list.jsx"
+import AdminFrame from "../../components/admin-components/admin-frame.jsx";
+import AdminHeader from "../../components/admin-components/admin-header.jsx";
 
 
 const Items = ({
@@ -75,7 +75,7 @@ const NewItem = () => {
                         <AdminInput min={1} type="number" placeholder="Количество..." style={{width:'100px'}} onChange={setQuantity}/>
                     </div>
                     <div style={descriptionPlace}>
-                        <RoundTextArea placeholder="Описание..." onChange={setDescription}/>
+                        <AdminTextArea placeholder="Описание..." onChange={setDescription}/>
                     </div>
                 </div>
                 <AdminFileList onSelect={setFiles}/>

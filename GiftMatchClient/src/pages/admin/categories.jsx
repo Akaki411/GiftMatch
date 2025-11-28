@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import AdminHeader from "../../components/admin-header.jsx";
-import AdminSearchPlace from "../../components/admin-search-place.jsx";
+import AdminHeader from "../../components/admin-components/admin-header.jsx";
+import AdminSearchPlace from "../../components/admin-components/admin-search-place.jsx";
 import {Plus} from "lucide-react"
 
 const Categories = ({

@@ -3,7 +3,6 @@ import {
     HOME_ROUTE,
     AUTH_ROUTE,
     REGISTRATION_ROUTE,
-    LOGIN_ROUTE,
     LOGOUT_ROUTE,
     FAVORITES_ROUTE,
     CART_ROUTE,
@@ -11,14 +10,21 @@ import {
     WISHLIST_ROUTE
 } from "./utils/consts.js";
 
-import Empty from "./pages/empty/empty.jsx";
 import Admin from "./pages/admin/admin.jsx";
+import Registration from "./pages/registration/registration.jsx";
+import Favorites from "./pages/favorites/favorites.jsx";
+import Account from "./pages/account/account.jsx";
+import Home from "./pages/home/home.jsx";
+import Cart from "./pages/cart/cart.jsx";
+import Wishlist from "./pages/wishlist/wishlist.jsx";
+import Logout from "./pages/logout/logout.jsx";
+
 
 export const secureRoutes =
     [
         {
             path: ADMIN_ROUTE,
-            Component: <Empty/>
+            Component: <Admin/>
         }
     ]
 
@@ -26,19 +32,19 @@ export const authRoutes =
     [
         {
             path: FAVORITES_ROUTE,
-            Component: <Empty/>
+            Component: <Favorites/>
         },
         {
             path: CART_ROUTE,
-            Component: <Empty/>
+            Component: <Cart/>
         },
         {
             path: PROFILE_ROUTE,
-            Component: <Empty/>
+            Component: <Account/>
         },
         {
             path: WISHLIST_ROUTE,
-            Component: <Empty/>
+            Component: <Wishlist/>
         }
     ]
 
@@ -46,18 +52,14 @@ export const publicRoutes =
     [
         {
             path: HOME_ROUTE,
-            Component: <Admin/>
+            Component: <Home/>
         },
         {
             path: AUTH_ROUTE + REGISTRATION_ROUTE,
-            Component: <Empty/>
-        },
-        {
-            path: AUTH_ROUTE + LOGIN_ROUTE,
-            Component: <Empty/>
+            Component: <Registration/>
         },
         {
             path: AUTH_ROUTE + LOGOUT_ROUTE,
-            Component: <Empty/>
+            Component: <Logout/>
         }
     ]
