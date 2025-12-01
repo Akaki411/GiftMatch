@@ -3,6 +3,11 @@
     font-family: Michroma;
     src: url(./resources/fonts/Michroma.ttf);
 }
+@font-face
+{
+    font-family: Montserrat;
+    src: url(./resources/fonts/Montserrat.ttf);
+}
 
 *
 {
@@ -17,4 +22,154 @@ html, body, #root
     width: 100vw;
     margin: 0;
     padding: 0;
+<<<<<<< Updated upstream
+=======
+    background-color: white;
+}
+
+.client-wrapper
+{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: sticky;
+}
+
+.nav-bar
+{
+    height: 55px;
+    width: 100%;
+    background: white;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    border-top: 1px solid #828282;
+    justify-content: space-around;
+}
+
+.nav-link
+{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header
+{
+    height: 40px;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Montserrat, sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.header-icon
+{
+    position: absolute;
+    left: 0;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.client-content
+{
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 450px;
+}
+
+.black-button
+{
+    height: 40px;
+    width: 100%;
+    background: black;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-size: 14px;
+}
+ .gray-button
+ {
+     height: 40px;
+     width: 100%;
+     background: #EEEEEE;
+     border-radius: 8px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     color: black;
+     column-gap: 10px;
+ }
+
+ .client-input
+ {
+     height: 40px;
+     width: 100%;
+     border: 2px solid #AAAFB2;
+     border-radius: 8px;
+     margin-top: 20px;
+     position: relative;
+ }
+
+ .client-input input
+ {
+     height: 100%;
+     width: 100%;
+     border: none;
+     border-radius: 8px;
+     padding: 0 10px;
+     box-sizing: border-box;
+     font-family: Montserrat, sans-serif;
+ }
+
+ .client-input_placeholder
+ {
+     position: absolute;
+     left: 10px;
+     top: 12px;
+     font-family: Montserrat, sans-serif;
+     font-size: 14px;
+     transition: 0.2s;
+ }
+
+.client-input_placeholder-active
+{
+    height: 18px;
+    padding: 0 5px;
+    box-sizing: border-box;
+    color: #AAAFB2;
+    font-size: 10px;
+    background: white;
+    transform: translateY(-20px);
+}
+
+.text-block
+{
+    width: 100%;
+    text-align: center;
+    font-family: Montserrat, sans-serif;
+    color: #000;
+}
+
+.gray
+{
+    color: #AAAFB2;
+>>>>>>> Stashed changes
 }
