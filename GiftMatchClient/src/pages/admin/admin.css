@@ -117,10 +117,7 @@ input, textarea
 {
     background-color: #364A5D;
 }
-.menu_btn svg
-{
-    margin: 10px;
-}
+
 .mb_active
 {
     background-color: #415A72;
@@ -199,11 +196,7 @@ input, textarea
     font-size: 12px;
     font-weight: bold;
 }
-.content-block svg
-{
-    width: 20px;
-    height: 20px;
-}
+
 .purchaseListBlock
 {
     transition: .2s;
@@ -220,11 +213,7 @@ input, textarea
     height: 20px;
     color: #686868;
 }
-.checkIntoButton svg
-{
-    width: 40px;
-    height: 40px;
-}
+
 .purchaseBlockContent
 {
     display: flex;
@@ -333,11 +322,7 @@ input, textarea
     width: 0;
     height: 0;
 }
-.add-photo-button svg
-{
-    width: 80px;
-    height: 80px;
-}
+
 .scrolling-file-list-block
 {
     display: flex;
