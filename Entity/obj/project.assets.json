@@ -4574,11 +4574,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj",
+      "projectUniqueName": "C:\\Projects\\GiftMatch\\Entity\\Entity.csproj",
       "projectName": "Entity",
-      "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj",
+      "projectPath": "C:\\Projects\\GiftMatch\\Entity\\Entity.csproj",
       "packagesPath": "C:\\Users\\akova\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\obj\\",
+      "outputPath": "C:\\Projects\\GiftMatch\\Entity\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\akova\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -4677,5 +4677,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Произошла ошибка при получении данных уязвимости пакета: Не удалось загрузить индекс службы для источника https://api.nuget.org/v3/index.json."
+    }
+  ]
 }

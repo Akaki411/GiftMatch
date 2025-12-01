@@ -22,3 +22,16 @@ C:\Users\akova\RiderProjects\DotNetLearn\Entity\obj\Debug\net9.0\Entity.dll
 C:\Users\akova\RiderProjects\DotNetLearn\Entity\obj\Debug\net9.0\refint\Entity.dll
 C:\Users\akova\RiderProjects\DotNetLearn\Entity\obj\Debug\net9.0\Entity.pdb
 C:\Users\akova\RiderProjects\DotNetLearn\Entity\obj\Debug\net9.0\ref\Entity.dll
+C:\Projects\GiftMatch\Entity\bin\Debug\net9.0\Entity.deps.json
+C:\Projects\GiftMatch\Entity\bin\Debug\net9.0\Entity.dll
+C:\Projects\GiftMatch\Entity\bin\Debug\net9.0\Entity.pdb
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\Entity.csproj.AssemblyReference.cache
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\Entity.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\Entity.AssemblyInfoInputs.cache
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\Entity.AssemblyInfo.cs
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\Entity.csproj.CoreCompileInputs.cache
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\Entity.sourcelink.json
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\Entity.dll
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\refint\Entity.dll
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\Entity.pdb
+C:\Projects\GiftMatch\Entity\obj\Debug\net9.0\ref\Entity.dll

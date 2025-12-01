@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\GiftMatch\\GiftMatch.csproj": {}
+    "C:\\Projects\\GiftMatch\\GiftMatch\\GiftMatch.csproj": {}
   },
   "projects": {
-    "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj": {
+    "C:\\Projects\\GiftMatch\\Entity\\Entity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj",
+        "projectUniqueName": "C:\\Projects\\GiftMatch\\Entity\\Entity.csproj",
         "projectName": "Entity",
-        "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj",
+        "projectPath": "C:\\Projects\\GiftMatch\\Entity\\Entity.csproj",
         "packagesPath": "C:\\Users\\akova\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\obj\\",
+        "outputPath": "C:\\Projects\\GiftMatch\\Entity\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\akova\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -111,14 +111,14 @@
         }
       }
     },
-    "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\GiftMatch\\GiftMatch.csproj": {
+    "C:\\Projects\\GiftMatch\\GiftMatch\\GiftMatch.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\GiftMatch\\GiftMatch.csproj",
+        "projectUniqueName": "C:\\Projects\\GiftMatch\\GiftMatch\\GiftMatch.csproj",
         "projectName": "GiftMatch",
-        "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\GiftMatch\\GiftMatch.csproj",
+        "projectPath": "C:\\Projects\\GiftMatch\\GiftMatch\\GiftMatch.csproj",
         "packagesPath": "C:\\Users\\akova\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\GiftMatch\\obj\\",
+        "outputPath": "C:\\Projects\\GiftMatch\\GiftMatch\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\akova\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -133,11 +133,11 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj": {
-                "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj"
+              "C:\\Projects\\GiftMatch\\Entity\\Entity.csproj": {
+                "projectPath": "C:\\Projects\\GiftMatch\\Entity\\Entity.csproj"
               },
-              "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj": {
-                "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj"
+              "C:\\Projects\\GiftMatch\\Migrations\\Migrations.csproj": {
+                "projectPath": "C:\\Projects\\GiftMatch\\Migrations\\Migrations.csproj"
               }
             }
           }
@@ -233,14 +233,14 @@
         }
       }
     },
-    "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj": {
+    "C:\\Projects\\GiftMatch\\Migrations\\Migrations.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj",
+        "projectUniqueName": "C:\\Projects\\GiftMatch\\Migrations\\Migrations.csproj",
         "projectName": "Migrations",
-        "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\Migrations.csproj",
+        "projectPath": "C:\\Projects\\GiftMatch\\Migrations\\Migrations.csproj",
         "packagesPath": "C:\\Users\\akova\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Migrations\\obj\\",
+        "outputPath": "C:\\Projects\\GiftMatch\\Migrations\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\akova\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -255,8 +255,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj": {
-                "projectPath": "C:\\Users\\akova\\RiderProjects\\DotNetLearn\\Entity\\Entity.csproj"
+              "C:\\Projects\\GiftMatch\\Entity\\Entity.csproj": {
+                "projectPath": "C:\\Projects\\GiftMatch\\Entity\\Entity.csproj"
               }
             }
           }

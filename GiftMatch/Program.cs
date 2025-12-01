@@ -98,7 +98,6 @@ class Program
         app.UseHttpsRedirection();
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
-        app.UseMiddleware<ValidationMiddleware>();
 
         app.UseAuthentication(); 
         app.UseMiddleware<JwtMiddleware>();
