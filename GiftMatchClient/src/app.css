@@ -45,6 +45,7 @@ html, body, #root
     bottom: 0;
     border-top: 1px solid #E6E6E6;
     justify-content: space-around;
+    z-index: 10;
 }
 
 .nav-link
@@ -188,6 +189,7 @@ html, body, #root
     background-color: #fff;
     opacity: 0;
     transform: translateY(8px);
+    padding-top: 40px;
 }
 .popup-active
 {

@@ -24,7 +24,7 @@ const Registration = () =>
                 <Ident/>
                 <ClientInput placeholder="email"/>
                 <Ident/>
-                <BlackButton text='Продолжить'></BlackButton>
+                <BlackButton text='Продолжить'/>
                 <Line text="или" bottom={40} top={40}/>
                 <GrayButton text='Продолжить с Google'><GoogleIcon/></GrayButton>
                 <Ident/>

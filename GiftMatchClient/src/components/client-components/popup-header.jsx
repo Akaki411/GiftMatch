@@ -7,7 +7,7 @@ const PopupHeader = ({
     text = ''
 }) => {
     return (
-        <div className='header' style={{borderBottom: border ? '1px solid #787878' : 'none'}}>
+        <div className='header' style={{borderBottom: border ? '1px solid #E6E6E6' : 'none'}}>
             <div className='header-icon' onClick={onClick}>
                 <ChevronLeft color="#000000" />
             </div>

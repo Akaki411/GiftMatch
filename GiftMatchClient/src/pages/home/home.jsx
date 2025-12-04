@@ -1,14 +1,14 @@
 import React from 'react';
 import NavBar from "../../components/client-components/nav-bar.jsx";
-import Popup from "../../components/functional/popup.jsx";
-import Registration from "../registration/registration.jsx";
+import SearchBar from "./search-bar.jsx"
 
 const Home = () => {
 
     return (
         <div className="client-wrapper">
-
-            <div onClick={() => {setRegIsActive(!regIsActive)}}>home</div>
+            <div className="client-content">
+                <SearchBar />
+            </div>
             <NavBar/>
         </div>
     );

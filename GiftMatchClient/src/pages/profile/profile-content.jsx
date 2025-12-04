@@ -1,8 +1,8 @@
 import React from 'react';
 
-const ProfileContent = () => {
+const ProfileContent = ({onClick}) => {
     return (
-        <div>
+        <div onClick={onClick}>
             Profile
         </div>
     );
