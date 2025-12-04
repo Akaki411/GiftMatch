@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from "../../components/client-components/header.jsx";
+import PopupHeader from "../../components/client-components/popup-header.jsx";
 import BlackButton from "../../components/client-components/black-button.jsx";
 import GrayButton from "../../components/client-components/gray-button.jsx";
 import GoogleIcon from "../../resources/vector_icons/google-icon.jsx";
@@ -17,7 +17,6 @@ const Registration = () =>
 {
     return (
         <div className="client-wrapper">
-            <Header border={false}/>
             <div className="client-content">
                 <GiftmatchLogo/>
                 <TextBlock size={22}><b>Введите email</b></TextBlock>

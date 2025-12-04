@@ -43,7 +43,7 @@ const LinkBlock = ({
     isActive = false
 }) => {
     return (
-        <a href={import.meta.env.VITE_APP_API_URL + button.link} className="nav-link">
+        <a href={window.location.origin + button.link} className="nav-link">
             <button.icon color={isActive ? "#F00E3A" : "#000000"} size={32} />
         </a>
     );

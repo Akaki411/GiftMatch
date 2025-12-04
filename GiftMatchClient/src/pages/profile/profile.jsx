@@ -1,21 +1,21 @@
 import React, {useContext} from 'react';
 import NavBar from "../../components/client-components/nav-bar.jsx";
 import Header from "../../components/client-components/header.jsx";
-import {Context} from "../../main.jsx";
 import Registration from "../registration/registration.jsx";
 import Popup from "../../components/functional/popup.jsx";
+import {Context} from "../../main.jsx";
 import Unauth from "../unauth/unauth.jsx";
+import ProfileContent from "./profile-content.jsx";
 
-const Cart = () => {
+const Profile = () =>
+{
     const {user} = useContext(Context);
-
-    const [regIsActive, setRegIsActive] = React.useState(!user.isAuth);
-
+    const [regIsActive, setRegIsActive] = React.useState(!user.isAuth)
     return (
         <div className="client-wrapper">
-            <Header title="Корзина" />
-            {user.isAuth ? <CartContent/> : <Unauth onClick={() => {setRegIsActive(true)}} />}
-            <NavBar page="cart"/>
+            <Header title="Аккаунт"/>
+            {user.isAuth ? <ProfileContent/> : <Unauth onClick={() => {setRegIsActive(true)}} />}
+            <NavBar page="profile" />
             <Popup isActive={regIsActive} headerSettings={{border: false}} onClose={() => setRegIsActive(false)}>
                 <Registration/>
             </Popup>
@@ -23,13 +23,4 @@ const Cart = () => {
     );
 };
 
-const CartContent = () => {
-    return (
-        <div>
-            cart
-        </div>
-    )
-}
-
-
-export default Cart;
+export default Profile;

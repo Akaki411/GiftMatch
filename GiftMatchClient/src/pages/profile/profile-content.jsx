@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Wishlist = () => {
+const ProfileContent = () => {
     return (
         <div>
-            wishlist
+            Profile
         </div>
     );
 };
 
-export default Wishlist;
+export default ProfileContent;
