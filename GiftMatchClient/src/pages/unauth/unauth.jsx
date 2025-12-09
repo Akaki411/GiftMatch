@@ -9,7 +9,7 @@ const Unauth = ({
     return (
         <div className="client-wrapper">
             <div className="client-content">
-                <Ident size={50}/>
+                <Ident size="40%"/>
                 <TextBlock>Для доступа к этой странице нужно войти в аккаунт</TextBlock>
                 <Ident size={20}/>
                 <BlackButton text="Войти" onClick={onClick} />

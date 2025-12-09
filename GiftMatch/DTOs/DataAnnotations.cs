@@ -15,6 +15,11 @@ namespace GiftMatch.api.DTOs
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
     }
+    
+    public class CheckEmailRequest
+    {
+        public bool isRegister { get; set; }  = false;
+    }
 
     public class LoginRequest
     {
@@ -38,6 +43,11 @@ namespace GiftMatch.api.DTOs
         public bool IsValid { get; set; }
         public UserDto? User { get; set; }
         public string? Message { get; set; }
+    }
+    
+    public class CheckEmailResponse
+    {
+        public bool isRegister { get; set; }
     }
 
     public class UserDto

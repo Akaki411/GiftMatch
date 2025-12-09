@@ -1,7 +1,7 @@
 import React from 'react';
 import {Gift} from "lucide-react";
 
-const GiftmatchLogo = () =>
+const GiftMatchLogo = () =>
 {
     const box = {
         width: "100%",
@@ -24,4 +24,4 @@ const GiftmatchLogo = () =>
     );
 };
 
-export default GiftmatchLogo;
+export default GiftMatchLogo;

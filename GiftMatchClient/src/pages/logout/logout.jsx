@@ -11,9 +11,10 @@ const Logout = observer(() => {
 
     useEffect(() => {
         localStorage.removeItem("token")
+        localStorage.removeItem("user")
         user.setUser({})
         user.setIsAuth(false)
-        user.setIsAdmin(false)
+        user.setRole("UNAUTHORIZED")
         navigate(HOME_ROUTE)
     }, [])
 

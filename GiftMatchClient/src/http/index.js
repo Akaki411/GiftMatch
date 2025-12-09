@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const $host = axios.create({
+const HOST = axios.create({
     baseURL: import.meta.env.VITE_APP_API_URL
 })
 
-const $authHost = axios.create({
+const AUTH_HOST = axios.create({
     baseURL: import.meta.env.VITE_APP_API_URL
 })
 
@@ -13,9 +13,9 @@ const authIntercepter = config => {
     return config
 }
 
-//$authHost.interceptors.use(authIntercepter)
+//AUTH_HOST.interceptors.use(authIntercepter)
 
 export {
-    $host,
-    $authHost
+    HOST,
+    AUTH_HOST
 }

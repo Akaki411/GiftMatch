@@ -91,6 +91,7 @@ html, body, #root
     flex-direction: column;
     align-items: center;
     max-width: 450px;
+    position: relative;
 }
 
 .black-button
@@ -125,7 +126,7 @@ html, body, #root
      width: 100%;
      border: 2px solid #AAAFB2;
      border-radius: 8px;
-     margin-top: 20px;
+     margin-top: 10px;
      position: relative;
  }
 
@@ -196,4 +197,11 @@ html, body, #root
     opacity: 1;
     transition: 0.2s;
     transform: translateY(0px);
+}
+
+.center
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

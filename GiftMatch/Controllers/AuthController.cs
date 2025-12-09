@@ -28,6 +28,20 @@ namespace GiftMatch.api.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        
+        [HttpPost(ApiRoutes.Auth.CheckEmail)]
+        public async Task<ActionResult<AuthResponse>> CheckEmail([FromBody] string request)
+        {
+            try
+            {
+                CheckEmailResponse response = await _authService.CheckEmailAsync(request);
+                return Ok(response);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
         [HttpPost(ApiRoutes.Auth.Login)]
         public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)

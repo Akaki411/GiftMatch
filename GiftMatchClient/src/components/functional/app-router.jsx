@@ -8,7 +8,7 @@ const AppRouter = () => {
     const {user} = useContext(Context)
     return (
         <Routes>
-            {user.isAdmin && secureRoutes.map(({path, Component}) =>
+            {["ADMIN", "MODER", "SUPPORT"].includes(user.role) && secureRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} element={Component} exact/>
             )}
             {publicRoutes.map(({path, Component}) =>

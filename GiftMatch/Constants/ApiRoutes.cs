@@ -11,6 +11,7 @@
             public const string Register = $"{Base}/register";
             public const string Login = $"{Base}/login";
             public const string Validate = $"{Base}/validate";
+            public const string CheckEmail = $"{Base}/email";
         }
 
         public static class User

@@ -18,6 +18,11 @@ namespace GiftMatch.Entity
 
         [Column("description")]
         public string? Description { get; set; }
+        
+        [Required]
+        [Column("img")]
+        [MaxLength(100)]
+        public string Img { get; set; } = null!;
 
         [Column("parent_category_id")]
         public int? ParentCategoryId { get; set; }

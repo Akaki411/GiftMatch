@@ -15,6 +15,7 @@ namespace GiftMatch.api.Services
         Task<AuthResponse> RegisterAsync(RegisterRequest request);
         Task<AuthResponse> LoginAsync(LoginRequest request);
         Task<ValidateTokenResponse> ValidateTokenAsync(string token);
+        Task<CheckEmailResponse> CheckEmailAsync(string email);
         string GenerateJwtToken(User user);
     }
 
@@ -120,6 +121,24 @@ namespace GiftMatch.api.Services
             }
         }
 
+        public async Task<CheckEmailResponse> CheckEmailAsync(string email)
+        {
+            try
+            {
+                Console.WriteLine(email);
+                User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null)
+                {
+                    return new CheckEmailResponse { isRegister = false };
+                }
+                return new CheckEmailResponse { isRegister = true};
+            }
+            catch (Exception ex)
+            {
+                return new CheckEmailResponse { isRegister = false };
+            }
+        }
+        
         public string GenerateJwtToken(User user)
         {
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_connection.GetSecretKey()));
