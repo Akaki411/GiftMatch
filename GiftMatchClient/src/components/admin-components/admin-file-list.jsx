@@ -17,7 +17,7 @@ const AdminFileList = (props) =>
     }
 
     return(
-        <div className="addPhotoBlock">
+        <div className="add-photo-block">
             <label className="add-photo-button" style={props.btnStyle}>
                 <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-evenly"}}>
                     <CirclePlus size={80} color="#aaafb2" strokeWidth={1} />

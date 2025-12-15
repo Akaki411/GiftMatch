@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GiftMatch.api.Services
 {
+    
     public interface IWishlistService
     {
         Task<WishlistItemDto> AddToWishlistAsync(int userId, AddToWishlistRequest request);
@@ -15,10 +16,12 @@ namespace GiftMatch.api.Services
     public class WishlistService : IWishlistService
     {
         private readonly GiftMatchDbContext _context;
-
-        public WishlistService(GiftMatchDbContext context)
+        private readonly IImageService _imageService;
+        
+        public WishlistService(GiftMatchDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         public async Task<WishlistItemDto> AddToWishlistAsync(int userId, AddToWishlistRequest request)
@@ -82,7 +85,7 @@ namespace GiftMatch.api.Services
                 .ThenInclude(p => p.ProductImages)
                 .FirstOrDefaultAsync(wi => wi.WishlistItemId == wishlistItem.WishlistItemId);
 
-            return MapToWishlistItemDto(item!);
+            return await MapToWishlistItemDtoAsync(item!);
         }
 
         public async Task<List<WishlistDto>> GetUserWishlistsAsync(int userId)
@@ -99,7 +102,15 @@ namespace GiftMatch.api.Services
                 .OrderByDescending(w => w.CreatedAt)
                 .ToListAsync();
 
-            return wishlists.Select(MapToWishlistDto).ToList();
+            List<WishlistDto> wishlistDtos = new List<WishlistDto>();
+
+            foreach (Wishlist wishlist in wishlists)
+            {
+                WishlistDto wishlistDto = await MapToWishlistDto(wishlist);
+                wishlistDtos.Add(wishlistDto);
+            }
+            
+            return wishlistDtos.ToList();
         }
 
         public async Task<WishlistDto> GetWishlistAsync(int wishlistId)
@@ -118,7 +129,7 @@ namespace GiftMatch.api.Services
             {
                 throw new KeyNotFoundException("Wishlist не найден");
             }
-            return MapToWishlistDto(wishlist);
+            return await MapToWishlistDto(wishlist);
         }
 
         public async Task RemoveFromWishlistAsync(int userId, int wishlistItemId)
@@ -141,20 +152,31 @@ namespace GiftMatch.api.Services
             await _context.SaveChangesAsync();
         }
 
-        private static WishlistDto MapToWishlistDto(Wishlist wishlist)
+        private async Task<WishlistDto> MapToWishlistDto(Wishlist wishlist)
         {
+            List<WishlistItemDto> wishlistItemDtos = new List<WishlistItemDto>();
+            
+            foreach (WishlistItem item in wishlist.WishlistItems)
+            {
+                WishlistItemDto dto = await MapToWishlistItemDtoAsync(item);
+                wishlistItemDtos.Add(dto);
+            }
+            
             return new WishlistDto
             {
                 WishlistId = wishlist.WishlistId,
                 Name = wishlist.Name,
                 Description = wishlist.Description,
                 IsPublic = wishlist.IsPublic,
-                Items = wishlist.WishlistItems.Select(MapToWishlistItemDto).ToList()
+                Items = wishlistItemDtos.ToList()
             };
         }
 
-        private static WishlistItemDto MapToWishlistItemDto(WishlistItem item)
+        private async Task<WishlistItemDto> MapToWishlistItemDtoAsync(WishlistItem item)
         {
+            List<int> imageIds = item.Product.ProductImages.OrderBy(pi => pi.DisplayOrder).Select(pi => pi.ImageId).ToList();
+            List<string> imageUrls = await _imageService.GetImageUrlsAsync(imageIds);
+            
             return new WishlistItemDto
             {
                 WishlistItemId = item.WishlistItemId,
@@ -167,7 +189,7 @@ namespace GiftMatch.api.Services
                     StockQuantity = item.Product.StockQuantity,
                     IsActive = item.Product.IsActive,
                     Categories = item.Product.ProductCategories.Select(pc => pc.Category.Name).ToList(),
-                    ImageIds = item.Product.ProductImages.OrderBy(pi => pi.DisplayOrder).Select(pi => pi.ImageId).ToList()
+                    ImageUrls = imageUrls
                 },
                 Priority = item.Priority,
                 Notes = item.Notes,

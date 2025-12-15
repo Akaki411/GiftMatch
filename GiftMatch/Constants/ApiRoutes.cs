@@ -83,5 +83,16 @@
             public const string UpdateStatus = $"{Base}/{{orderId:int}}/status";
             public const string UpdateDetails = $"{Base}/{{orderId:int}}/details";
         }
+        
+        public static class Image
+        {
+            public const string Base = $"{ApiRoutes.Base}/image";
+
+            public const string UploadAvatar = $"{Base}/avatar";
+            public const string UploadProductImage = $"{Base}/product";
+            public const string UploadProductImages = $"{Base}/product/multiple";
+            public const string UploadCategoryImage = $"{Base}/category";
+            public const string Delete = $"{Base}/{{imageId:int}}";
+        }
     }
 }

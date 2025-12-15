@@ -68,6 +68,10 @@
               "target": "Package",
               "version": "[9.0.4, )"
             },
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[3.1.12, )"
+            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[8.14.0, )"
@@ -185,6 +189,10 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[3.1.12, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
@@ -304,6 +312,10 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[3.1.12, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",

@@ -15,10 +15,12 @@ namespace GiftMatch.api.Services
     public class CartService : ICartService
     {
         private readonly GiftMatchDbContext _context;
+        private readonly IImageService _imageService;
 
-        public CartService(GiftMatchDbContext context)
+        public CartService(GiftMatchDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         public async Task<CartItemDto> AddToCartAsync(int userId, AddToCartRequest request)
@@ -61,7 +63,7 @@ namespace GiftMatch.api.Services
                     .ThenInclude(p => p.ProductImages)
                     .FirstOrDefaultAsync(ci => ci.CartItemId == existingCartItem.CartItemId);
 
-                return MapToCartItemDto(updated!);
+                return await MapToCartItemDtoAsync(updated!);
             }
 
             CartItem cartItem = new CartItem
@@ -82,7 +84,7 @@ namespace GiftMatch.api.Services
                 .ThenInclude(p => p.ProductImages)
                 .FirstOrDefaultAsync(ci => ci.CartItemId == cartItem.CartItemId);
 
-            return MapToCartItemDto(created!);
+            return await MapToCartItemDtoAsync(created!);
         }
 
         public async Task RemoveFromCartAsync(int userId, int cartItemId)
@@ -110,7 +112,12 @@ namespace GiftMatch.api.Services
                 .OrderByDescending(ci => ci.AddedAt)
                 .ToListAsync();
 
-            List<CartItemDto> items = cartItems.Select(MapToCartItemDto).ToList();
+            List<CartItemDto> items =  new List<CartItemDto>();
+
+            foreach (CartItem cartItem in cartItems)
+            {
+                items.Add(await MapToCartItemDtoAsync(cartItem));
+            }
             decimal totalAmount = items.Sum(i => i.Subtotal);
 
             return new CartDto
@@ -190,8 +197,11 @@ namespace GiftMatch.api.Services
             return $"GM{DateTime.UtcNow:yyyyMMddHHmmss}{Random.Shared.Next(1000, 9999)}";
         }
 
-        private static CartItemDto MapToCartItemDto(CartItem cartItem)
+        private async Task<CartItemDto> MapToCartItemDtoAsync(CartItem cartItem)
         {
+            List<int> imageIds = cartItem.Product.ProductImages.OrderBy(pi => pi.DisplayOrder).Select(pi => pi.ImageId).ToList();
+            List<string> imageUrls = await _imageService.GetImageUrlsAsync(imageIds);
+
             return new CartItemDto
             {
                 CartItemId = cartItem.CartItemId,
@@ -204,7 +214,7 @@ namespace GiftMatch.api.Services
                     StockQuantity = cartItem.Product.StockQuantity,
                     IsActive = cartItem.Product.IsActive,
                     Categories = cartItem.Product.ProductCategories.Select(pc => pc.Category.Name).ToList(),
-                    ImageIds = cartItem.Product.ProductImages.OrderBy(pi => pi.DisplayOrder).Select(pi => pi.ImageId).ToList()
+                    ImageUrls = imageUrls
                 },
                 Quantity = cartItem.Quantity,
                 Subtotal = cartItem.Product.Price * cartItem.Quantity,

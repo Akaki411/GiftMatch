@@ -14,10 +14,12 @@ namespace GiftMatch.api.Services
     public class FavoriteService : IFavoriteService
     {
         private readonly GiftMatchDbContext _context;
-
-        public FavoriteService(GiftMatchDbContext context)
+        private readonly IImageService _imageService;
+        
+        public FavoriteService(GiftMatchDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         public async Task AddToFavoritesAsync(int userId, int productId)
@@ -67,11 +69,22 @@ namespace GiftMatch.api.Services
                 .OrderByDescending(f => f.AddedAt)
                 .ToListAsync();
 
-            return favorites.Select(f => MapToProductDto(f.Product)).ToList();
+            List<ProductDto> productDtos = new List<ProductDto>();
+
+            foreach (Favorite favorite in favorites)
+            {
+                ProductDto dto = await MapToProductDtoAsync(favorite.Product);
+                productDtos.Add(dto);
+            }
+            
+            return productDtos;
         }
 
-        private static ProductDto MapToProductDto(Product product)
+        private async Task<ProductDto> MapToProductDtoAsync(Product product)
         {
+            List<int> imageIds = product.ProductImages.OrderBy(pi => pi.DisplayOrder).Select(pi => pi.ImageId).ToList();
+            List<string> imageUrls = await _imageService.GetImageUrlsAsync(imageIds);
+
             return new ProductDto
             {
                 ProductId = product.ProductId,
@@ -81,7 +94,7 @@ namespace GiftMatch.api.Services
                 StockQuantity = product.StockQuantity,
                 IsActive = product.IsActive,
                 Categories = product.ProductCategories.Select(pc => pc.Category.Name).ToList(),
-                ImageIds = product.ProductImages.OrderBy(pi => pi.DisplayOrder).Select(pi => pi.ImageId).ToList()
+                ImageUrls = imageUrls
             };
         }
     }

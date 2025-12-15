@@ -23,13 +23,15 @@ namespace GiftMatch.api.Services
     {
         private readonly GiftMatchDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IImageService _imageService;
         private Connection _connection;
 
-        public AuthService(GiftMatchDbContext context, IConfiguration configuration)
+        public AuthService(GiftMatchDbContext context, IConfiguration configuration, IImageService imageService)
         {
             _context = context;
             _configuration = configuration;
             _connection = new Connection("settings.json");
+            _imageService = imageService;
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
@@ -56,7 +58,7 @@ namespace GiftMatch.api.Services
             return new AuthResponse
             {
                 Token = token,
-                User = MapToUserDto(user)
+                User = await MapToUserDtoAsync(user)
             };
         }
 
@@ -76,7 +78,7 @@ namespace GiftMatch.api.Services
             {
                 Token = token,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(expirationMinutes),
-                User = MapToUserDto(user)
+                User = await MapToUserDtoAsync(user)
             };
         }
 
@@ -112,7 +114,7 @@ namespace GiftMatch.api.Services
                 return new ValidateTokenResponse
                 {
                     IsValid = true,
-                    User = MapToUserDto(user)
+                    User = await MapToUserDtoAsync(user)
                 };
             }
             catch (Exception ex)
@@ -163,18 +165,33 @@ namespace GiftMatch.api.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private static UserDto MapToUserDto(User user)
+        private async Task<UserDto> MapToUserDtoAsync(User user)
         {
-            return new UserDto
+            try
             {
-                UserId = user.UserId,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Role = user.Role,
-                AvatarImageId = user.AvatarImageId,
-                CreatedAt = user.CreatedAt
-            };
+                string? avatarUrl = null;
+                if (user.AvatarImageId.HasValue)
+                {
+                    avatarUrl = await _imageService.GetImageUrlAsync(user.AvatarImageId.Value);
+                }
+
+                return new UserDto
+                {
+                    UserId = user.UserId,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Role = user.Role,
+                    AvatarUrl = avatarUrl,
+                    CreatedAt = user.CreatedAt
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
     }
 }

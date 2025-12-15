@@ -15,11 +15,6 @@ namespace GiftMatch.api.DTOs
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
     }
-    
-    public class CheckEmailRequest
-    {
-        public bool isRegister { get; set; }  = false;
-    }
 
     public class LoginRequest
     {
@@ -57,7 +52,7 @@ namespace GiftMatch.api.DTOs
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string Role { get; set; } = null!;
-        public int? AvatarImageId { get; set; }
+        public string? AvatarUrl { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 
@@ -65,7 +60,9 @@ namespace GiftMatch.api.DTOs
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public int? AvatarImageId { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public string? NewPassword { get; set; }
     }
 
     public class ProductDto
@@ -77,7 +74,7 @@ namespace GiftMatch.api.DTOs
         public int StockQuantity { get; set; }
         public bool IsActive { get; set; }
         public List<string> Categories { get; set; } = new();
-        public List<int> ImageIds { get; set; } = new();
+        public List<string> ImageUrls { get; set; } = new();
     }
 
     public class CreateProductRequest
@@ -90,8 +87,7 @@ namespace GiftMatch.api.DTOs
         public decimal Price { get; set; }
         [Range(0, int.MaxValue)]
         public int StockQuantity { get; set; }
-        public List<int>? CategoryIds { get; set; }
-        public List<int>? ImageIds { get; set; }
+        public List<int>? CategoryIds { get; set; } 
     }
 
     public class UpdateProductRequest
@@ -104,7 +100,6 @@ namespace GiftMatch.api.DTOs
         public int? StockQuantity { get; set; }
         public bool? IsActive { get; set; }
         public List<int>? CategoryIds { get; set; }
-        public List<int>? ImageIds { get; set; }
     }
 
     public class CategoryDto
@@ -114,6 +109,7 @@ namespace GiftMatch.api.DTOs
         public string? Description { get; set; }
         public int? ParentCategoryId { get; set; }
         public string? ParentCategoryName { get; set; }
+        public string? ImageUrl { get; set; }
         public List<CategoryDto> SubCategories { get; set; } = new();
     }
 
@@ -123,6 +119,7 @@ namespace GiftMatch.api.DTOs
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public int? ParentCategoryId { get; set; }
+        // Изображение передается через IFormFile
     }
 
     public class WishlistDto
@@ -231,5 +228,11 @@ namespace GiftMatch.api.DTOs
         public int Page { get; set; }
         public int PageSize { get; set; }
         public int TotalPages { get; set; }
+    }
+
+    public class UploadImageResponse
+    {
+        public int ImageId { get; set; }
+        public string ImageUrl { get; set; } = null!;
     }
 }

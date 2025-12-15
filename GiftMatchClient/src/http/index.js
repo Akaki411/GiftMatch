@@ -13,7 +13,7 @@ const authIntercepter = config => {
     return config
 }
 
-//AUTH_HOST.interceptors.use(authIntercepter)
+AUTH_HOST.interceptors.request.use(authIntercepter)
 
 export {
     HOST,

@@ -9,7 +9,7 @@ namespace GiftMatch.api.Services
         Task<PagedResult<ProductDto>> GetAllProductsAsync(int page, int limit);
         Task<PagedResult<ProductDto>> GetProductsByCategoryAsync(int categoryId, int page, int limit);
         Task<ProductDto> GetProductByIdAsync(int productId);
-        Task<ProductDto> CreateProductAsync(CreateProductRequest request);
+        Task<ProductDto> CreateProductAsync(CreateProductRequest request, List<int> imageIds);
         Task<ProductDto> UpdateProductAsync(int productId, UpdateProductRequest request);
         Task DeleteProductAsync(int productId);
     }
@@ -17,10 +17,12 @@ namespace GiftMatch.api.Services
     public class ProductService : IProductService
     {
         private readonly GiftMatchDbContext _context;
+        private readonly IImageService _imageService;
 
-        public ProductService(GiftMatchDbContext context)
+        public ProductService(GiftMatchDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         public async Task<PagedResult<ProductDto>> GetAllProductsAsync(int page, int limit)
@@ -38,9 +40,15 @@ namespace GiftMatch.api.Services
                 .Take(limit)
                 .ToListAsync();
 
+            List<ProductDto> productDtos = new List<ProductDto>();
+            foreach (Product product in items)
+            {
+                productDtos.Add(await MapToProductDtoAsync(product));
+            }
+
             return new PagedResult<ProductDto>
             {
-                Items = items.Select(MapToProductDto).ToList(),
+                Items = productDtos,
                 TotalCount = totalCount,
                 Page = page,
                 PageSize = limit,
@@ -63,9 +71,15 @@ namespace GiftMatch.api.Services
                 .Take(limit)
                 .ToListAsync();
 
+            List<ProductDto> productDtos = new List<ProductDto>();
+            foreach (Product product in items)
+            {
+                productDtos.Add(await MapToProductDtoAsync(product));
+            }
+
             return new PagedResult<ProductDto>
             {
-                Items = items.Select(MapToProductDto).ToList(),
+                Items = productDtos,
                 TotalCount = totalCount,
                 Page = page,
                 PageSize = limit,
@@ -86,10 +100,10 @@ namespace GiftMatch.api.Services
                 throw new KeyNotFoundException("Товар не найден");
             }
 
-            return MapToProductDto(product);
+            return await MapToProductDtoAsync(product);
         }
 
-        public async Task<ProductDto> CreateProductAsync(CreateProductRequest request)
+        public async Task<ProductDto> CreateProductAsync(CreateProductRequest request, List<int> imageIds)
         {
             Product product = new Product
             {
@@ -99,11 +113,13 @@ namespace GiftMatch.api.Services
                 StockQuantity = request.StockQuantity,
                 IsActive = true
             };
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+
             if (request.CategoryIds != null && request.CategoryIds.Any())
             {
-                foreach (var categoryId in request.CategoryIds)
+                foreach (int categoryId in request.CategoryIds)
                 {
                     _context.ProductCategories.Add(new ProductCategory
                     {
@@ -113,14 +129,14 @@ namespace GiftMatch.api.Services
                 }
             }
 
-            if (request.ImageIds != null && request.ImageIds.Any())
+            if (imageIds.Any())
             {
-                for (int i = 0; i < request.ImageIds.Count; i++)
+                for (int i = 0; i < imageIds.Count; i++)
                 {
                     _context.ProductImages.Add(new ProductImage
                     {
                         ProductId = product.ProductId,
-                        ImageId = request.ImageIds[i],
+                        ImageId = imageIds[i],
                         IsPrimary = i == 0,
                         DisplayOrder = i
                     });
@@ -176,7 +192,7 @@ namespace GiftMatch.api.Services
                 List<ProductCategory> existingCategories = product.ProductCategories.ToList();
                 _context.ProductCategories.RemoveRange(existingCategories);
 
-                foreach (var categoryId in request.CategoryIds)
+                foreach (int categoryId in request.CategoryIds)
                 {
                     _context.ProductCategories.Add(new ProductCategory
                     {
@@ -186,39 +202,43 @@ namespace GiftMatch.api.Services
                 }
             }
 
-            if (request.ImageIds != null)
-            {
-                List<ProductImage> existingImages = product.ProductImages.ToList();
-                _context.ProductImages.RemoveRange(existingImages);
-
-                for (int i = 0; i < request.ImageIds.Count; i++)
-                {
-                    _context.ProductImages.Add(new ProductImage
-                    {
-                        ProductId = product.ProductId,
-                        ImageId = request.ImageIds[i],
-                        IsPrimary = i == 0,
-                        DisplayOrder = i
-                    });
-                }
-            }
             await _context.SaveChangesAsync();
+
             return await GetProductByIdAsync(product.ProductId);
         }
 
         public async Task DeleteProductAsync(int productId)
         {
-            Product? product = await _context.Products.FindAsync(productId);
+            Product? product = await _context.Products
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(p => p.ProductId == productId);
+            
             if (product == null)
             {
                 throw new KeyNotFoundException("Товар не найден");
             }
+
+            foreach (var productImage in product.ProductImages)
+            {
+                try
+                {
+                    await _imageService.DeleteImageAsync(productImage.ImageId);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to delete product image: {ex.Message}");
+                }
+            }
+
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
         }
 
-        private static ProductDto MapToProductDto(Product product)
+        private async Task<ProductDto> MapToProductDtoAsync(Product product)
         {
+            List<int> imageIds = product.ProductImages.OrderBy(pi => pi.DisplayOrder).Select(pi => pi.ImageId).ToList();
+            List<string> imageUrls = await _imageService.GetImageUrlsAsync(imageIds);
+
             return new ProductDto
             {
                 ProductId = product.ProductId,
@@ -228,7 +248,7 @@ namespace GiftMatch.api.Services
                 StockQuantity = product.StockQuantity,
                 IsActive = product.IsActive,
                 Categories = product.ProductCategories.Select(pc => pc.Category.Name).ToList(),
-                ImageIds = product.ProductImages.OrderBy(pi => pi.DisplayOrder).Select(pi => pi.ImageId).ToList()
+                ImageUrls = imageUrls
             };
         }
     }

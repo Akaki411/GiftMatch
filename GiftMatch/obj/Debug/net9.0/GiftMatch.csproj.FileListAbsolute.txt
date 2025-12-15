@@ -109,3 +109,4 @@ C:\Projects\GiftMatch\GiftMatch\obj\Debug\net9.0\refint\GiftMatch.dll
 C:\Projects\GiftMatch\GiftMatch\obj\Debug\net9.0\GiftMatch.pdb
 C:\Projects\GiftMatch\GiftMatch\obj\Debug\net9.0\GiftMatch.genruntimeconfig.cache
 C:\Projects\GiftMatch\GiftMatch\obj\Debug\net9.0\ref\GiftMatch.dll
+C:\Projects\GiftMatch\GiftMatch\bin\Debug\net9.0\SixLabors.ImageSharp.dll

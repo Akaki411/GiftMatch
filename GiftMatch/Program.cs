@@ -71,8 +71,11 @@ namespace GiftMatch.api
             builder.Services.AddScoped<IFavoriteService, FavoriteService>();
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IImageService, ImageService>();
+            
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
+            
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GiftMatch API", Version = "v1" });

@@ -108,7 +108,7 @@ input, textarea
     justify-content: center;
     align-items: center;
     width: inherit;
-    min-height: 100px;
+    height: 100px;
     cursor: pointer;
     text-align: center;
     color: white;
@@ -181,10 +181,6 @@ input, textarea
     padding-right: 2px;
 }
 
-
-
-
-
 .content-block
 {
     display: flex;
@@ -234,12 +230,15 @@ input, textarea
     margin: 0 40px;
     border-radius: 10px
 }
-.blockContent
+.block-content
 {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     width: 95%;
+    column-gap: 10px;
+    row-gap: 10px;
     margin: 20px 0 20px 20px;
 }
 .manipulation
@@ -307,7 +306,6 @@ input, textarea
     border-radius: 5px;
     background-color: #E7E7E7;
     color: #AAAFB2;
-    margin: 0 15px;
 }
 .add-photo-button:hover
 {
@@ -327,7 +325,6 @@ input, textarea
 {
     display: flex;
     flex-wrap: wrap;
-    min-width: 300px;
     width: 100%;
     height: 368px;
     border-radius: 5px;
@@ -352,7 +349,7 @@ input, textarea
 }
 .add-item-information
 {
-    width: 600px;
+    width: 400px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -366,20 +363,14 @@ input, textarea
     flex-direction: row-reverse;
     align-items: center;
 }
-.submit
+.admin-button
 {
-    width: 300px;
-    height: 40px;
-    border-radius: 50px;
-    border: 0;
-    background-color: #16BB99;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    font-weight: bold;
-}
-.submit:disabled,
-.submit[disabled]
-{
-    background-color: #E7E7E7;
+    cursor: pointer;
 }
 .delete
 {
@@ -401,10 +392,11 @@ input, textarea
     color: white;
     font-weight: bold
 }
-.addPhotoBlock
+.add-photo-block
 {
     display: flex;
-    max-width: 800px;
+    column-gap: 10px;
+    width: 100%;
 }
 .imageBlock:hover,
 .deleteImageBlock
@@ -565,10 +557,50 @@ input, textarea
     min-height: 300px;
     position: relative;
 }
+.popup-admin
+{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(3px);
+    transition: 0.2s;
+}
+.popup-admin_background
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    opacity: 0.5;
+    transition: 0.2s;
+
+}
+.popup-admin_content
+{
+    position: relative;
+    background-color: white;
+    width: 70%;
+    height: 70%;
+    border-radius: 15px;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    box-shadow: 0 1px 10px #00000099;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 @media screen and (min-width: 1800px)
 {
-    div .addPhotoBlock
+    div .add-photo-block
     {
         width: auto;
     }
@@ -594,30 +626,33 @@ input, textarea
     div .menu{
         flex-direction: row;
         width: 100%;
-        height: 130px;
-        position: relative;
-        overflow-x: scroll;
+        height: 80px;
+        position: fixed;
+        bottom: 0;
         border-radius: 0;
-        padding: 0;
+        z-index: 100;
     }
     div .cursor{display: none}
     div .menu_btn
     {
-        min-width: 120px;
-        min-height: 100%;
+        flex: 1;
+        height: 100%;
+        justify-content: center;
     }
+    div .menu_btn_text {display: none}
     div .container
     {
         width: 100%;
-        height: calc(100% - 130px);
+        height: 100%;
     }
     div .main
     {
         width: 100%
+
     }
     div .content-block
     {
-        min-width: 100%;
+        width: 90%;
     }
     div .new-section-and-category
     {
@@ -627,14 +662,14 @@ input, textarea
         height: auto;
     }
     div .vertical-line{display: none}
-    div .blockContent
+    div .block-content
     {
         margin: 20px 0 0 0;
         flex-direction: column;
         align-items: center;
         justify-content: center;
     }
-    div .addPhotoBlock
+    div .add-photo-block
     {
         width: 98%;
         margin-left: 1%;

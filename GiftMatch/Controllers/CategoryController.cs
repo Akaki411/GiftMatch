@@ -2,6 +2,7 @@
 using GiftMatch.api.DTOs;
 using GiftMatch.api.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GiftMatch.api.Controllers
@@ -10,10 +11,12 @@ namespace GiftMatch.api.Controllers
     public class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;
+        private readonly IImageService _imageService;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IImageService imageService)
         {
             _categoryService = categoryService;
+            _imageService = imageService;
         }
 
         [HttpGet(ApiRoutes.Category.GetAll)]
@@ -25,9 +28,16 @@ namespace GiftMatch.api.Controllers
 
         [HttpPost(ApiRoutes.Category.Create)]
         [Authorize(Policy = "ModerOrAdmin")]
-        public async Task<ActionResult<CategoryDto>> CreateCategory([FromBody] CreateCategoryRequest request)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<CategoryDto>> CreateCategory([FromForm] CreateCategoryRequest request, [FromForm] IFormFile? image)
         {
-            CategoryDto category = await _categoryService.CreateCategoryAsync(request);
+            int? imageId = null;
+            if (image != null)
+            {
+                imageId = await _imageService.SaveImageAsync(image, ImageType.Category);
+            }
+
+            CategoryDto category = await _categoryService.CreateCategoryAsync(request, imageId);
             return CreatedAtAction(nameof(GetAllCategories), new { }, category);
         }
 

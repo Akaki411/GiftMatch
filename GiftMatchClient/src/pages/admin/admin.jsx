@@ -1,13 +1,19 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import './admin.css'
 import Purchases from "./purchases.jsx"
 import Items from "./items.jsx"
 import {Gift, LayoutList, List, UserCog} from "lucide-react"
 import Categories from "./categories.jsx";
 import Users from "./users.jsx";
+import {observer} from "mobx-react-lite";
+import {Context} from "../../main.jsx";
+import {getCategories} from "../../http/category-api.js";
+import {getAllItems} from "../../http/item-api.js";
 
-const Admin = () =>
+const Admin = observer(() =>
 {
+    const {categories, items} = useContext(Context);
+
     const [state, setState] = React.useState("products")
     const [chapter, setChapter] = React.useState("Покупки")
     const [title, setTitle] = React.useState("Список последних")
@@ -21,6 +27,12 @@ const Admin = () =>
 
     useEffect(() => {
         document.title = "GiftMatch ADMIN"
+        getCategories().then(response => {
+            categories.setList(response.data)
+        })
+        getAllItems().then(response => {
+            items.setList(response.data?.items)
+        })
     }, [])
 
 
@@ -63,8 +75,7 @@ const Admin = () =>
             </div>
         </div>
     )
-
-}
+})
 
 const MenuCell = ({
     btn = {},
@@ -74,7 +85,7 @@ const MenuCell = ({
     return(
         <div className='menu_btn' onClick={fn}>
             {<btn.logo  size={36} color={isActive ? "#1DC19F" : "#ffffff"}/>}
-            <p style={{color: isActive ? "#1DC19F" : "#ffffff"}}>{btn.title}</p>
+            <p style={{color: isActive ? "#1DC19F" : "#ffffff"}} className="menu_btn_text">{btn.title}</p>
         </div>
     );
 };

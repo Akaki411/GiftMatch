@@ -9,15 +9,18 @@ namespace GiftMatch.api.Services
         Task<UserDto> GetUserByIdAsync(int userId);
         Task<List<UserDto>> GetAllUsersAsync(string? searchName);
         Task<UserDto> UpdateUserAsync(int userId, UpdateUserRequest request);
+        Task<UserDto> UpdateUserAvatarAsync(int userId, int imageId);
     }
 
     public class UserService : IUserService
     {
         private readonly GiftMatchDbContext _context;
+        private readonly IImageService _imageService;
 
-        public UserService(GiftMatchDbContext context)
+        public UserService(GiftMatchDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         public async Task<UserDto> GetUserByIdAsync(int userId)
@@ -27,7 +30,8 @@ namespace GiftMatch.api.Services
             {
                 throw new KeyNotFoundException("Пользователь не найден");
             }
-            return MapToUserDto(user);
+
+            return await MapToUserDtoAsync(user);
         }
 
         public async Task<List<UserDto>> GetAllUsersAsync(string? searchName)
@@ -45,7 +49,14 @@ namespace GiftMatch.api.Services
             }
 
             List<User> users = await query.OrderBy(u => u.CreatedAt).ToListAsync();
-            return users.Select(MapToUserDto).ToList();
+            List<UserDto> userDtos = new List<UserDto>();
+
+            foreach (User user in users)
+            {
+                userDtos.Add(await MapToUserDtoAsync(user));
+            }
+
+            return userDtos;
         }
 
         public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserRequest request)
@@ -54,6 +65,11 @@ namespace GiftMatch.api.Services
             if (user == null)
             {
                 throw new KeyNotFoundException("Пользователь не найден");
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            {
+                throw new UnauthorizedAccessException("Неверный пароль");
             }
 
             if (request.FirstName != null)
@@ -66,18 +82,57 @@ namespace GiftMatch.api.Services
                 user.LastName = request.LastName;
             }
 
-            if (request.AvatarImageId.HasValue)
+            if (request.Email != null)
             {
-                user.AvatarImageId = request.AvatarImageId.Value;
+                user.Email = request.Email;
+            }
+
+            if (!string.IsNullOrEmpty(request.NewPassword))
+            {
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
             }
 
             user.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
-            return MapToUserDto(user);
+            return await MapToUserDtoAsync(user);
         }
 
-        private static UserDto MapToUserDto(User user)
+        public async Task<UserDto> UpdateUserAvatarAsync(int userId, int imageId)
         {
+            User? user = await _context.Users.FindAsync(userId);
+            
+            if (user == null)
+            {
+                throw new KeyNotFoundException("Пользователь не найден");
+            }
+            
+            if (user.AvatarImageId.HasValue)
+            {
+                try
+                {
+                    await _imageService.DeleteImageAsync(user.AvatarImageId.Value);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to delete old avatar: {ex.Message}");
+                }
+            }
+
+            user.AvatarImageId = imageId;
+            user.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return await MapToUserDtoAsync(user);
+        }
+        
+        private async Task<UserDto> MapToUserDtoAsync(User user)
+        {
+            string? avatarUrl = null;
+            if (user.AvatarImageId.HasValue)
+            {
+                avatarUrl = await _imageService.GetImageUrlAsync(user.AvatarImageId.Value);
+            }
+
             return new UserDto
             {
                 UserId = user.UserId,
@@ -85,7 +140,7 @@ namespace GiftMatch.api.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Role = user.Role,
-                AvatarImageId = user.AvatarImageId,
+                AvatarUrl = avatarUrl,
                 CreatedAt = user.CreatedAt
             };
         }

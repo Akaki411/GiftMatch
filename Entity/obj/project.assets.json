@@ -930,6 +930,22 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "SixLabors.ImageSharp/3.1.12": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/SixLabors.ImageSharp.props": {}
+        }
+      },
       "Swashbuckle.AspNetCore.Annotations/6.3.0": {
         "type": "package",
         "dependencies": {
@@ -2652,6 +2668,22 @@
         "lib/netstandard1.0/_._",
         "runtime.native.system.4.0.0.nupkg.sha512",
         "runtime.native.system.nuspec"
+      ]
+    },
+    "SixLabors.ImageSharp/3.1.12": {
+      "sha512": "iAg6zifihXEFS/t7fiHhZBGAdCp3FavsF4i2ZIDp0JfeYeDVzvmlbY1CNhhIKimaIzrzSi5M/NBFcWvZT2rB/A==",
+      "type": "package",
+      "path": "sixlabors.imagesharp/3.1.12",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "build/SixLabors.ImageSharp.props",
+        "lib/net6.0/SixLabors.ImageSharp.dll",
+        "lib/net6.0/SixLabors.ImageSharp.xml",
+        "sixlabors.imagesharp.128.png",
+        "sixlabors.imagesharp.3.1.12.nupkg.sha512",
+        "sixlabors.imagesharp.nuspec"
       ]
     },
     "Swashbuckle.AspNetCore.Annotations/6.3.0": {
@@ -4564,6 +4596,7 @@
       "Microsoft.EntityFrameworkCore >= 9.0.9",
       "Microsoft.IdentityModel.Tokens >= 8.14.0",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.4",
+      "SixLabors.ImageSharp >= 3.1.12",
       "System.IdentityModel.Tokens.Jwt >= 8.14.0",
       "v24.OpenApi.Models >= 2.0.45"
     ]
@@ -4635,6 +4668,10 @@
             "target": "Package",
             "version": "[9.0.4, )"
           },
+          "SixLabors.ImageSharp": {
+            "target": "Package",
+            "version": "[3.1.12, )"
+          },
           "System.IdentityModel.Tokens.Jwt": {
             "target": "Package",
             "version": "[8.14.0, )"
@@ -4677,13 +4714,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Произошла ошибка при получении данных уязвимости пакета: Не удалось загрузить индекс службы для источника https://api.nuget.org/v3/index.json."
-    }
-  ]
+  }
 }

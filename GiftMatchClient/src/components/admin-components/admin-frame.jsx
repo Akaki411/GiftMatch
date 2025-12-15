@@ -26,6 +26,13 @@ const AdminFrame = ({
         boxSizing: "border-box",
         padding: "0 20px",
     }
+    const content = {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    }
 
     return (
         <div style={block}>
@@ -33,7 +40,7 @@ const AdminFrame = ({
                 {logo}
                 <div style={{ color: "#2B3C4C" }}>{title}</div>
             </div>
-            <div className="blockContent">
+            <div style={content}>
                 {children}
             </div>
         </div>

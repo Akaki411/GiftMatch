@@ -2,6 +2,7 @@
 using GiftMatch.api.DTOs;
 using GiftMatch.api.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GiftMatch.api.Controllers
@@ -10,10 +11,12 @@ namespace GiftMatch.api.Controllers
     public class ProductController : BaseController
     {
         private readonly IProductService _productService;
+        private readonly IImageService _imageService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IImageService imageService)
         {
             _productService = productService;
+            _imageService = imageService;
         }
 
         [HttpGet(ApiRoutes.Product.GetAll)]
@@ -41,9 +44,16 @@ namespace GiftMatch.api.Controllers
 
         [HttpPost(ApiRoutes.Product.Create)]
         [Authorize(Policy = "ModerOrAdmin")]
-        public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] CreateProductRequest request)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<ProductDto>> CreateProduct([FromForm] CreateProductRequest request, [FromForm] List<IFormFile>? images)
         {
-            ProductDto product = await _productService.CreateProductAsync(request);
+            List<int> imageIds = new List<int>();
+            if (images != null && images.Any())
+            {
+                imageIds = await _imageService.SaveImagesAsync(images, ImageType.Product);
+            }
+
+            ProductDto product = await _productService.CreateProductAsync(request, imageIds);
             return CreatedAtAction(nameof(GetProduct), new { productId = product.ProductId }, product);
         }
 
