@@ -1,5 +1,9 @@
 import {AUTH_HOST} from "./index";
 
+export const getAllUsers = async ({query}) => {
+    return await AUTH_HOST.get(`/api/user${query ? `?searchName=${query}` : ""}`)
+}
+
 export const editUser = async ({FirstName, LastName, Email, Password, NewPassword}) => {
     return await AUTH_HOST.put('/api/user/me', {
         FirstName,

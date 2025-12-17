@@ -3,7 +3,7 @@ import NavBar from "../../components/client-components/nav-bar.jsx";
 import Registration from "../registration/registration.jsx";
 import Popup from "../../components/functional/popup.jsx";
 import {Context} from "../../main.jsx";
-import Unauth from "../unauth/unauth.jsx";
+import UnAuth from "../unauth/unAuth.jsx";
 import ProfileContent from "./profile-content.jsx";
 import EditProfile from "./edit-profile.jsx";
 
@@ -14,7 +14,7 @@ const Profile = () =>
     const [editIsActive, setEditIsActive] = React.useState(false)
     return (
         <div className="client-wrapper">
-            {user.isAuth ? <ProfileContent onClick={() => {setEditIsActive(true)}}/> : <Unauth onClick={() => {setRegIsActive(true)}} />}
+            {user.isAuth ? <ProfileContent onClick={() => {setEditIsActive(true)}}/> : <UnAuth onClick={() => {setRegIsActive(true)}} />}
             <NavBar page="profile" />
             <Popup isActive={regIsActive} headerSettings={{border: false}} onClose={() => setRegIsActive(false)}>
                 <Registration/>

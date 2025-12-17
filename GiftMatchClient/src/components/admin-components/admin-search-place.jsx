@@ -2,7 +2,8 @@ import React from 'react';
 import {Search} from "lucide-react"
 
 const AdminSearchPlace = ({
-    onSearch = () => {}
+    onSearch = () => {},
+    onChange = () => {},
 }) =>
 {
     const [text, setText] = React.useState("")
@@ -32,7 +33,10 @@ const AdminSearchPlace = ({
 
     return (
         <div style={searchPlace}>
-            <input type="text" style={search} onChange={(e) => setText(e.target.value)}/>
+            <input type="text" style={search} onChange={(e) => {
+                setText(e.target.value)
+                onChange(e.target.value)
+            }}/>
             <Search size={14} color="#aaafb2" style={magnifier} onClick={()=>onSearch(text)}/>
         </div>
     );

@@ -55,47 +55,6 @@ export default class CategoryStore
         return rootCategories;
     }
 
-    normalizeCategoryTree(categories)
-    {
-        const seenIds = new Set();
-        const result = [];
-
-        const processNode = (node) =>
-        {
-            if (seenIds.has(node.categoryId))
-            {
-                return null
-            }
-            seenIds.add(node.categoryId)
-            const newNode = {
-                categoryId: node.categoryId,
-                name: node.name,
-                description: node.description,
-                imageUrl: node.imageUrl,
-                children: []
-            }
-            if (node.children && node.children.length > 0)
-            {
-                node.children.forEach(child => {
-                    const processedChild = processNode(child)
-                    if (processedChild)
-                    {
-                        newNode.children.push(processedChild)
-                    }
-                })
-            }
-            return newNode
-        }
-        categories.forEach(category => {
-            const processed = processNode(category)
-            if (processed)
-            {
-                result.push(processed)
-            }
-        })
-        return result
-    }
-
     setList(value)
     {
         this._categories = value

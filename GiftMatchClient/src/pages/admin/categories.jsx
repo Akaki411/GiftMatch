@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import AdminHeader from "../../components/admin-components/admin-header.jsx";
 import AdminSearchPlace from "../../components/admin-components/admin-search-place.jsx";
 import {Camera, Pencil, Plus, Trash} from "lucide-react"
@@ -30,6 +30,7 @@ const Categories = observer(({
                 <Plus size={32} color="#aaafb2" onClick={() => setNewCategory(true)} style={{cursor: "pointer"}}/>
             </AdminHeader>
             <CategoryTreeView/>
+            <Ident size={30}/>
             <PopupAdmin isActive={newCategory} onClose={() => setNewCategory(false)}>
                 <AddCategoryBlock/>
             </PopupAdmin>
@@ -54,15 +55,15 @@ const imageBlock = {
     height: "250px",
 }
 
-const AddCategoryBlock = ({
-    callback = () => {}
-}) => {
+const AddCategoryBlock = () => {
+    const {categories} = useContext(Context)
     const [category, setCategory] = React.useState("")
     const [parent, setParent] = React.useState(null)
+    const [description, setDescription] = React.useState("")
     const [image, setImage] = React.useState(null)
 
     const createCategory = () => {
-        if(category !== "" && image !== null)
+        if(category === "" && image === null && description === "")
         {
             alert("Для создания категории подарка необходимо название категории и ее иллюстрация.")
             return
@@ -70,9 +71,10 @@ const AddCategoryBlock = ({
         addCategory({
             title: category,
             parentId: parent,
+            description: description,
             image: image,
-        }).then(response => {
-
+        }).then(() => {
+            window.location.reload()
         })
     }
 
@@ -83,16 +85,24 @@ const AddCategoryBlock = ({
                 <AdminInput style={{width:"100%"}} placeholder="Название категории..." onChange={setCategory}/>
             </div>
             <div style={fieldBlock}>
-                <AdminSelect style={{width:"100%"}} placeholder="Родительская категория..." onChange={setParent}/>
+                <AdminSelect
+                    style={{width:"100%"}}
+                    placeholder="Родительская категория..."
+                    onChange={setParent}
+                    options={categories.list.map((item) => {return {
+                        id: item.categoryId,
+                        name: item.name
+                    }})}
+                />
             </div>
             <div style={{width: "90%"}}>
-                <AdminTextArea style={{width:"100%", height: "80px"}} placeholder="Описание категории..." onChange={setParent}/>
+                <AdminTextArea style={{width:"100%", height: "80px"}} placeholder="Описание категории..." onChange={setDescription}/>
             </div>
             <div style={imageBlock}>
                 <AdminFileInput onSelect={setImage}/>
             </div>
             <div style={fieldBlock}>
-                <AdminButton text="Отправить" isActive={category !== "" && image !== null}/>
+                <AdminButton text="Отправить" isActive={category !== "" && image !== null} onClick={createCategory}/>
             </div>
         </div>
     )

@@ -6,7 +6,7 @@ const SearchBar = () => {
     const [text, setText] = React.useState("")
 
     const search = {
-        width: "100%",
+        width: "90%",
         height: "40px",
         background: "#f5f5f5",
         margin: "15px 0",
@@ -17,7 +17,9 @@ const SearchBar = () => {
         columnGap: "10px",
         padding: "0 10px",
         boxSizing: "border-box",
-        position: "relative",
+        position: "fixed",
+        zIndex: 10,
+        boxShadow: "0 0 10px #FFFFFF",
     }
     const field = {
         width: "100%",

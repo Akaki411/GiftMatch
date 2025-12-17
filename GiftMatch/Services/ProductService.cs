@@ -1,6 +1,7 @@
 ﻿using GiftMatch.api.DTOs;
 using GiftMatch.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GiftMatch.api.Services
 {
@@ -18,15 +19,28 @@ namespace GiftMatch.api.Services
     {
         private readonly GiftMatchDbContext _context;
         private readonly IImageService _imageService;
+        private readonly ICacheService _cacheService;
+        private readonly ILogger<ProductService> _logger;
 
-        public ProductService(GiftMatchDbContext context, IImageService imageService)
+        public ProductService(GiftMatchDbContext context, IImageService imageService, ICacheService cacheService, ILogger<ProductService> logger)
         {
             _context = context;
             _imageService = imageService;
+            _cacheService = cacheService;
+            _logger = logger;
         }
 
         public async Task<PagedResult<ProductDto>> GetAllProductsAsync(int page, int limit)
         {
+            string cacheKey = CacheKeys.Products(page, limit);
+            PagedResult<ProductDto>? cached = await _cacheService.GetAsync<PagedResult<ProductDto>>(cacheKey);
+            
+            if (cached != null)
+            {
+                _logger.LogDebug($"Returning cached products: page {page}, limit {limit}");
+                return cached;
+            }
+
             IQueryable<Product> query = _context.Products
                 .Include(p => p.ProductCategories)
                 .ThenInclude(pc => pc.Category)
@@ -41,12 +55,12 @@ namespace GiftMatch.api.Services
                 .ToListAsync();
 
             List<ProductDto> productDtos = new List<ProductDto>();
-            foreach (Product product in items)
+            foreach (var product in items)
             {
                 productDtos.Add(await MapToProductDtoAsync(product));
             }
 
-            return new PagedResult<ProductDto>
+            PagedResult<ProductDto> result = new PagedResult<ProductDto>
             {
                 Items = productDtos,
                 TotalCount = totalCount,
@@ -54,10 +68,24 @@ namespace GiftMatch.api.Services
                 PageSize = limit,
                 TotalPages = (int)Math.Ceiling(totalCount / (double)limit)
             };
+
+            await _cacheService.SetAsync(cacheKey, result, TimeSpan.FromMinutes(10));
+            _logger.LogDebug($"Cached products: page {page}, limit {limit}");
+
+            return result;
         }
 
         public async Task<PagedResult<ProductDto>> GetProductsByCategoryAsync(int categoryId, int page, int limit)
         {
+            string cacheKey = CacheKeys.ProductsByCategory(categoryId, page, limit);
+            PagedResult<ProductDto>? cached = await _cacheService.GetAsync<PagedResult<ProductDto>>(cacheKey);
+            
+            if (cached != null)
+            {
+                _logger.LogDebug($"Returning cached products for category {categoryId}");
+                return cached;
+            }
+
             IQueryable<Product> query = _context.Products
                 .Include(p => p.ProductCategories)
                 .ThenInclude(pc => pc.Category)
@@ -72,12 +100,12 @@ namespace GiftMatch.api.Services
                 .ToListAsync();
 
             List<ProductDto> productDtos = new List<ProductDto>();
-            foreach (Product product in items)
+            foreach (var product in items)
             {
                 productDtos.Add(await MapToProductDtoAsync(product));
             }
 
-            return new PagedResult<ProductDto>
+            PagedResult<ProductDto> result = new PagedResult<ProductDto>
             {
                 Items = productDtos,
                 TotalCount = totalCount,
@@ -85,10 +113,24 @@ namespace GiftMatch.api.Services
                 PageSize = limit,
                 TotalPages = (int)Math.Ceiling(totalCount / (double)limit)
             };
+
+            await _cacheService.SetAsync(cacheKey, result, TimeSpan.FromMinutes(10));
+            _logger.LogDebug($"Cached products for category {categoryId}");
+
+            return result;
         }
 
         public async Task<ProductDto> GetProductByIdAsync(int productId)
         {
+            string cacheKey = CacheKeys.Product(productId);
+            ProductDto? cached = await _cacheService.GetAsync<ProductDto>(cacheKey);
+            
+            if (cached != null)
+            {
+                _logger.LogDebug($"Returning cached product {productId}");
+                return cached;
+            }
+
             Product? product = await _context.Products
                 .Include(p => p.ProductCategories)
                 .ThenInclude(pc => pc.Category)
@@ -100,7 +142,12 @@ namespace GiftMatch.api.Services
                 throw new KeyNotFoundException("Товар не найден");
             }
 
-            return await MapToProductDtoAsync(product);
+            ProductDto productDto = await MapToProductDtoAsync(product);
+            
+            await _cacheService.SetAsync(cacheKey, productDto, TimeSpan.FromMinutes(15));
+            _logger.LogDebug($"Cached product {productId}");
+
+            return productDto;
         }
 
         public async Task<ProductDto> CreateProductAsync(CreateProductRequest request, List<int> imageIds)
@@ -144,6 +191,9 @@ namespace GiftMatch.api.Services
             }
 
             await _context.SaveChangesAsync();
+
+            await InvalidateProductCacheAsync();
+            _logger.LogInformation($"Product created: {product.ProductId}, cache invalidated");
 
             return await GetProductByIdAsync(product.ProductId);
         }
@@ -192,7 +242,7 @@ namespace GiftMatch.api.Services
                 List<ProductCategory> existingCategories = product.ProductCategories.ToList();
                 _context.ProductCategories.RemoveRange(existingCategories);
 
-                foreach (int categoryId in request.CategoryIds)
+                foreach (var categoryId in request.CategoryIds)
                 {
                     _context.ProductCategories.Add(new ProductCategory
                     {
@@ -203,6 +253,10 @@ namespace GiftMatch.api.Services
             }
 
             await _context.SaveChangesAsync();
+
+            await _cacheService.RemoveAsync(CacheKeys.Product(productId));
+            await InvalidateProductCacheAsync();
+            _logger.LogInformation($"Product updated: {productId}, cache invalidated");
 
             return await GetProductByIdAsync(product.ProductId);
         }
@@ -217,8 +271,9 @@ namespace GiftMatch.api.Services
             {
                 throw new KeyNotFoundException("Товар не найден");
             }
-
-            foreach (var productImage in product.ProductImages)
+            List<ProductImage> productImagesCopy = product.ProductImages.ToList();
+    
+            foreach (ProductImage productImage in productImagesCopy)
             {
                 try
                 {
@@ -226,12 +281,23 @@ namespace GiftMatch.api.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Failed to delete product image: {ex.Message}");
+                    _logger.LogError(ex, $"Failed to delete product image: {productImage.ImageId}");
                 }
             }
-
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
+            await _cacheService.RemoveAsync(CacheKeys.Product(productId));
+            await InvalidateProductCacheAsync();
+            _logger.LogInformation($"Product deleted: {productId}, cache invalidated");
+        }
+
+        private async Task InvalidateProductCacheAsync()
+        {
+            for (int page = 1; page <= 10; page++)
+            {
+                await _cacheService.RemoveAsync(CacheKeys.Products(page, 10));
+                await _cacheService.RemoveAsync(CacheKeys.Products(page, 20));
+            }
         }
 
         private async Task<ProductDto> MapToProductDtoAsync(Product product)

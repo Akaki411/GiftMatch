@@ -12,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
+using Serilog;
+using Serilog.Events;
+using System.Text;
 
 
 
@@ -21,128 +24,164 @@ namespace GiftMatch.api
     {
         public static Task Main(string[] args)
         {
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-    
-            Connection connection = new Connection("settings.json");
-            builder.Services.AddDbContext<GiftMatchDbContext>(options => options.UseNpgsql(connection.GetConnectionString()));
-    
-            builder.Services.AddMemoryCache();
-    
-            string secretKey = connection.GetSecretKey();
-    
-            builder.Services.AddAuthentication(options =>
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File(
+                    path: "logs/giftmatch-.txt",
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 30,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+            try
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+                WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        
+                builder.Host.UseSerilog();
+                
+                Connection connection = new Connection("settings.json");
+                builder.Services.AddDbContext<GiftMatchDbContext>(options => options.UseNpgsql(connection.GetConnectionString()));
+                
+                builder.Services.AddDistributedMemoryCache();
+                builder.Services.AddMemoryCache();
+        
+                string secretKey = connection.GetSecretKey();
+        
+                builder.Services.AddAuthentication(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = connection.GetIssuer(),
-                    ValidAudience = connection.GetAudience(),
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-                    ClockSkew = TimeSpan.Zero
-                };
-            });
-    
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminOnly", policy => policy.RequireRole("ADMIN"));
-                options.AddPolicy("ModerOrAdmin", policy => policy.RequireRole("MODER", "ADMIN"));
-            });
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowFrontend",
-                    policy =>
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
-                    });
-            });
-            builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IProductService, ProductService>();
-            builder.Services.AddScoped<ICategoryService, CategoryService>();
-            builder.Services.AddScoped<IWishlistService, WishlistService>();
-            builder.Services.AddScoped<IFavoriteService, FavoriteService>();
-            builder.Services.AddScoped<ICartService, CartService>();
-            builder.Services.AddScoped<IOrderService, OrderService>();
-            builder.Services.AddScoped<IImageService, ImageService>();
-            
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            
-            builder.Services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GiftMatch API", Version = "v1" });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = connection.GetIssuer(),
+                        ValidAudience = connection.GetAudience(),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                        ClockSkew = TimeSpan.Zero
+                    };
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        
+                builder.Services.AddAuthorization(options =>
                 {
-                    {
-                        new OpenApiSecurityScheme
+                    options.AddPolicy("AdminOnly", policy => policy.RequireRole("ADMIN"));
+                    options.AddPolicy("ModerOrAdmin", policy => policy.RequireRole("MODER", "ADMIN"));
+                });
+                builder.Services.AddCors(options =>
+                {
+                    options.AddPolicy("AllowAll",
+                        policy =>
                         {
-                            Reference = new OpenApiReference
+                            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                        });
+                });
+                builder.Services.AddScoped<IAuthService, AuthService>();
+                builder.Services.AddScoped<IUserService, UserService>();
+                builder.Services.AddScoped<IProductService, ProductService>();
+                builder.Services.AddScoped<ICategoryService, CategoryService>();
+                builder.Services.AddScoped<IWishlistService, WishlistService>();
+                builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+                builder.Services.AddScoped<ICartService, CartService>();
+                builder.Services.AddScoped<IOrderService, OrderService>();
+                builder.Services.AddScoped<IImageService, ImageService>();
+                builder.Services.AddScoped<ICacheService, CacheService>();
+                builder.Services.AddScoped<IBackupService, BackupService>();
+                
+                builder.Services.AddHostedService<AutoBackupService>();
+                
+                builder.Services.AddControllers();
+                builder.Services.AddEndpointsApiExplorer();
+                
+                builder.Services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GiftMatch API", Version = "v1" });
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "Bearer"
+                    });
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
                             {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            Array.Empty<string>()
+                        }
+                    });
+                });
+        
+                WebApplication app = builder.Build();
+                
+                app.Urls.Clear();
+                app.Urls.Add("http://0.0.0.0:5000");
+        
+                string staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                string uploadsPath = Path.Combine(staticFilesPath, "uploads");
+                string imagesPath = Path.Combine(uploadsPath, "images");
+                string avatarsPath = Path.Combine(uploadsPath, "avatars");
+            
+                Directory.CreateDirectory(uploadsPath);
+                Directory.CreateDirectory(imagesPath);
+                Directory.CreateDirectory(avatarsPath);
+                
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                }
+                
+                app.UseStaticFiles();
+            
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(uploadsPath),
+                    RequestPath = "/uploads",
+                    OnPrepareResponse = ctx =>
+                    {
+                        ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=604800");
+                        ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
                     }
                 });
-            });
-    
-            WebApplication app = builder.Build();
-    
-            string staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            string uploadsPath = Path.Combine(staticFilesPath, "uploads");
-            string imagesPath = Path.Combine(uploadsPath, "images");
-            string avatarsPath = Path.Combine(uploadsPath, "avatars");
         
-            Directory.CreateDirectory(uploadsPath);
-            Directory.CreateDirectory(imagesPath);
-            Directory.CreateDirectory(avatarsPath);
-            
-            if (app.Environment.IsDevelopment())
+                app.UseSerilogRequestLogging();
+                
+                app.UseHttpsRedirection();
+        
+                app.UseCors("AllowAll");
+                app.UseMiddleware<ExceptionHandlingMiddleware>();
+        
+                app.UseAuthentication(); 
+                app.UseMiddleware<JwtMiddleware>();
+        
+                app.UseAuthorization();
+                app.MapControllers();
+                app.Run();
+            }
+            catch (Exception ex)
             {
-                app.UseSwagger();
+                Log.Fatal(ex, "Application terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
             }
             
-            app.UseStaticFiles();
-        
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(uploadsPath),
-                RequestPath = "/uploads",
-                OnPrepareResponse = ctx =>
-                {
-                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=604800");
-                    ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
-                }
-            });
-    
-            app.UseHttpsRedirection();
-    
-            app.UseCors("AllowFrontend");
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
-    
-            app.UseAuthentication(); 
-            app.UseMiddleware<JwtMiddleware>();
-    
-            app.UseAuthorization();
-            app.MapControllers();
-            app.Run();
             return Task.CompletedTask;
         }
     }

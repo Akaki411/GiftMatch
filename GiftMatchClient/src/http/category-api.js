@@ -5,8 +5,11 @@ export const getCategories = async (search) => {
 }
 
 
-export const addCategory = async ({title, parentId, image}) => {
-    return await AUTH_HOST.post('/api/user/me', {
-
-    }, {headers: {'Content-Type': 'application/json'}})
+export const addCategory = async ({title, description, parentId, image}) => {
+    let formData = new FormData()
+    formData.append("name", title)
+    formData.append("description", description)
+    if (parentId) formData.append("parentCategoryId", parentId)
+    formData.append("image", image)
+    return await AUTH_HOST.post("/api/category", formData, {headers: {'Content-Type': 'multipart/form-data'}})
 }

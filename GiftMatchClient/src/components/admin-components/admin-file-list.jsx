@@ -1,33 +1,34 @@
 import React from 'react';
 import {CirclePlus} from "lucide-react"
 
-const AdminFileList = (props) =>
+const AdminFileList = ({
+    onSelect = () => {},
+    btnStyle = {},
+    blockStyle = {},
+
+}) =>
 {
-    const [state, setState] = React.useState({})
+    const [files, setFiles] = React.useState({})
     const selectImagesForCreateItem = React.createRef()
 
-    const OnSelectImageForItem = async () =>
+    const OnSelectImageForItem = (key) =>
     {
-        const files = selectImagesForCreateItem.current.files
-        await setState(files)
-        if(props.onSelect)
-        {
-            props.onSelect(files)
-        }
+        setFiles(key.target.files)
+        onSelect(Object.keys(key.target.files).map(file => key.target.files[file]))
     }
 
     return(
         <div className="add-photo-block">
-            <label className="add-photo-button" style={props.btnStyle}>
+            <label className="add-photo-button" style={btnStyle}>
                 <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-evenly"}}>
                     <CirclePlus size={80} color="#aaafb2" strokeWidth={1} />
                     <p>Добавить фото</p>
                 </div>
-                <input type="file" accept="image/*" ref={selectImagesForCreateItem} multiple={true} onChange={() => {OnSelectImageForItem()}}/>
+                <input type="file" accept="image/*" ref={selectImagesForCreateItem} multiple={true} onChange={OnSelectImageForItem}/>
             </label>
-            <div className="scrolling-file-list-block" style={props.blockStyle}>
-                {Object.keys(state)?.map(file => {
-                    return <Block file={state[file]} key={state[file].name}/>
+            <div className="scrolling-file-list-block" style={blockStyle}>
+                {Object.keys(files)?.map(file => {
+                    return <Block file={files[file]} key={files[file].name}/>
                 })}
             </div>
         </div>

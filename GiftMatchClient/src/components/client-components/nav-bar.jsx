@@ -1,8 +1,8 @@
 import React from 'react';
-import HomeIcon from "../../resources/vector_icons/home-icon.jsx";
-import HearIcon from "../../resources/vector_icons/heart-icon.jsx";
-import CartIcon from "../../resources/vector_icons/cart-icon.jsx";
-import UserIcon from "../../resources/vector_icons/user-icon.jsx";
+import HomeIcon from "../../resources/svg/home-icon.jsx";
+import HearIcon from "../../resources/svg/heart-icon.jsx";
+import CartIcon from "../../resources/svg/cart-icon.jsx";
+import UserIcon from "../../resources/svg/user-icon.jsx";
 import {CART_ROUTE, FAVORITES_ROUTE, HOME_ROUTE, PROFILE_ROUTE} from "../../utils/consts.js";
 
 const NavBar = ({

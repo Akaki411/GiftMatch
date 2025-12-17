@@ -7,20 +7,19 @@ const AdminSelect = ({
     style = {},
     placeholder = ""
 }) => {
-    const ref = React.createRef();
-    const currentOption = () => {
+    const current = (ref) => {
         let obj = null
         options.forEach(option => {
-            if (option.id.toString() === ref.current.value)
+            if (option.id.toString() === ref.target.value)
             {
-                obj = option
+                obj = option.id
             }
         })
-        return obj
+        onChange(obj)
     }
 
     return (
-        <select name={name} ref={ref} onChange={()=> {onChange(currentOption())}} className="round-select" defaultValue="default" style={style}>
+        <select name={name} onChange={current} className="round-select" defaultValue="default" style={style}>
             <option value="default" className="round-select-option" disabled={true}>{placeholder}</option>
             {options.map(option => {
                 return <Option data={option} key={option.id}/>

@@ -45,7 +45,8 @@ html, body, #root
     bottom: 0;
     border-top: 1px solid #E6E6E6;
     justify-content: space-around;
-    z-index: 10;
+    z-index: 15;
+    max-width: 450px;
 }
 
 .nav-link

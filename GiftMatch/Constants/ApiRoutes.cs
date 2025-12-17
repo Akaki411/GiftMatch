@@ -94,5 +94,17 @@
             public const string UploadCategoryImage = $"{Base}/category";
             public const string Delete = $"{Base}/{{imageId:int}}";
         }
+        
+        public static class Backup
+        {
+            public const string Base = $"{ApiRoutes.Base}/backup";
+
+            public const string Create = Base;
+            public const string GetAll = Base;
+            public const string GetLatest = $"{Base}/latest";
+            public const string Restore = $"{Base}/restore";
+            public const string Delete = $"{Base}/{{fileName}}";
+            public const string Download = $"{Base}/download/{{fileName}}";
+        }
     }
 }

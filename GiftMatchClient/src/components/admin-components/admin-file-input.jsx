@@ -14,7 +14,7 @@ const image = {
     height: "100%",
     backgroundPosition: "center center",
     backgroundRepeat: "no-repeat",
-    backgroundSize: "100%"
+    backgroundSize: "cover"
 }
 
 const AdminFileInput = ({

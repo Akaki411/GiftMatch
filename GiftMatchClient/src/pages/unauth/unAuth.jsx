@@ -3,7 +3,7 @@ import Ident from "../../components/client-components/ident.jsx";
 import TextBlock from "../../components/client-components/text-block.jsx";
 import BlackButton from "../../components/client-components/black-button.jsx";
 
-const Unauth = ({
+const UnAuth = ({
     onClick = () => {}
 }) => {
     return (
@@ -19,4 +19,4 @@ const Unauth = ({
     );
 };
 
-export default Unauth;
+export default UnAuth;

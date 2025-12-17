@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import BlackButton from "../../components/client-components/black-button.jsx";
 import GrayButton from "../../components/client-components/gray-button.jsx";
-import GoogleIcon from "../../resources/vector_icons/google-icon.jsx";
-import AppleIcon from "../../resources/vector_icons/apple-icon.jsx";
+import GoogleIcon from "../../resources/svg/google-icon.jsx";
+import AppleIcon from "../../resources/svg/apple-icon.jsx";
 import ClientInput from "../../components/client-components/client-input.jsx";
 import GiftMatchLogo from "../../components/client-components/gift-match-logo.jsx";
 import Line from "../../components/client-components/line.jsx";

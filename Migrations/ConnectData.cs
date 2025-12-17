@@ -15,6 +15,8 @@ namespace GiftMatch.Migrations
         public string Audience { get; set; }
         public int JWTLifeTime { get; set; }
         
+        
+        
     }
 
     public class Connection
@@ -50,6 +52,11 @@ namespace GiftMatch.Migrations
         public int GetJWTLifeTime()
         {
             return _data.JWTLifeTime;
+        }
+
+        public ConnectData GetConnectData()
+        {
+            return _data;
         }
     }
 }

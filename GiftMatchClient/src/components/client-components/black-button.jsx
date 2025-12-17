@@ -7,9 +7,10 @@ const BlackButton = ({
     children,
     isLoading = false,
     isActive = true,
+    style = {},
 }) => {
     return (
-        <div className="black-button" onClick={() => {if(isActive) onClick()}} style={{backgroundColor: isActive ? "#000" : "#888"}}>
+        <div className="black-button" onClick={() => {if(isActive) onClick()}} style={{backgroundColor: isActive ? "#000" : "#888", ...style}}>
             {children}
             {isLoading ? <ClipLoader color="#fff" size={14} speedMultiplier={1.5}/> : text}
         </div>

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import './admin.css'
-import Purchases from "./purchases.jsx"
+import Orders from "./orders.jsx"
 import Items from "./items.jsx"
 import {Gift, LayoutList, List, UserCog} from "lucide-react"
 import Categories from "./categories.jsx";
@@ -14,12 +14,12 @@ const Admin = observer(() =>
 {
     const {categories, items} = useContext(Context);
 
-    const [state, setState] = React.useState("products")
+    const [state, setState] = React.useState("purchases")
     const [chapter, setChapter] = React.useState("Покупки")
     const [title, setTitle] = React.useState("Список последних")
 
     const buttons = {
-        purchases: {id: 1, logo: Gift, title:"Заказы", element: <Purchases setChapter={setChapter} setTitle={setTitle}/>},
+        purchases: {id: 1, logo: Gift, title:"Заказы", element: <Orders setChapter={setChapter} setTitle={setTitle}/>},
         products: {id: 2, logo: LayoutList, title:"Товары", element: <Items setChapter={setChapter} setTitle={setTitle}/>},
         categories: {id: 3, logo: List, title:"Категории", element: <Categories setChapter={setChapter} setTitle={setTitle}/>},
         users: {id: 4, logo: UserCog, title:"Пользователи", element: <Users setChapter={setChapter} setTitle={setTitle}/>},
@@ -31,10 +31,9 @@ const Admin = observer(() =>
             categories.setList(response.data)
         })
         getAllItems().then(response => {
-            items.setList(response.data?.items)
+            items.setList(response.data.items)
         })
     }, [])
-
 
     const MoveCursor = (moveTo) =>
     {
